@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title='Node-Controller Player'
+    body
+        audio(id='music-player' preload='auto')
+        //Socket.io
+        script(type='text/javascript' src='js/socket.io-1.1.0.js')
+        //Music queue object
+        script(type='text/javascript' src='js/music-queue.js')
+        //Base 64 url encoding/decoding
+        script(type='text/javascript' src='js/base64.js')
+        //Page JS
+        script(type='text/javascript' src='js/chat.js')

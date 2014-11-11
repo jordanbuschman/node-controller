@@ -1,0 +1,24 @@
+{
+  "name": "node-controller",
+  "description": "Node music controller server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "express": "~4.9.0",
+    "fs": "0.0.2",
+    "socket.io": "~1.1.0",
+    "http": "0.0.0",
+    "musicmetadata": "~0.4.6",
+    "body-parser": "~1.9.0",
+    "debug": "~2.0.0",
+    "morgan": "~1.3.2",
+    "readdir": "0.0.13",
+    "path": "~0.4.9",
+    "jade": "~1.7.0",
+    "mime": "~1.2.11",
+    "base64url": "0.0.6"
+  }
+}
