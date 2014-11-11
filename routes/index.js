@@ -4,7 +4,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.json({ message: 'Server is up!' });
+    res.render('index', { ip: '127.0.0.1', port: process.env.PORT || 3000 });
+}).post('/', function(req, res) {
+    res.json({ message: 'potato' });
 });
 
 module.exports = router;

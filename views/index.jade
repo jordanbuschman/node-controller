@@ -1,0 +1,14 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title='Node-Controller server is up!'
+    body
+        header
+            h1 The server is running!
+        p To connect to this server, enter #{ip}:#{port} in the node-controller app.
+        p Navigate to 
+            a(href='http://#{ip}:#{port}/play') #{ip}:#{port}/play
+            |  in any desktop browser that you want to play music through.
+        footer
+            p Created by Jordan Buschman - COEN 168 Final Project
