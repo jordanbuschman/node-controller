@@ -38,12 +38,18 @@ function MusicQueue(callback) {
     var getSongListInfo = function(songList, cb) {
         //Get the song info about the entire song list
         var songListInfo = new Array();
+        var filesToIgnore = 0; //The .gitignore file, if there is one, and any other unnecessary files
     
         songList.forEach(function(song) {
+            if (song == path.join(__dirname, '../music/.gitignore')) { //Don't include the .gitignore file
+                filesToIgnore++;
+                return;
+            }
+
             parseSong(song, function(songInfo) {
                 songListInfo.push({'name': songInfo.name, 'artist': songInfo.artist, 'album': songInfo.album, 'path': songInfo.path});
     
-                if (songListInfo.length == songList.length && typeof cb == "function")
+                if (songListInfo.length == songList.length - filesToIgnore && typeof cb == "function")
                     cb(songListInfo);
             });
         });
