@@ -130,6 +130,10 @@ var chat = function(io) {
             musicControllerIO.emit('change play head', time);
         });
 
+        socket.on('disconnect app', function() {
+            socket.disconnect();
+        });
+
         socket.on('disconnect', function() {
             userCount--;
             musicControllerIO.emit('remove user', [userCount, playerCount]);
