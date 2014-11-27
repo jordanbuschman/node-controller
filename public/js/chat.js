@@ -8,8 +8,11 @@
 
     function loadAndPlay() { //Get the next song on the queue, load it up, and play it
         var song = musicQueue.nowPlayingInfo();
-        console.log(JSON.stringify(song));
         if (!song) return; //No next song, return
+
+        document.getElementById('title').innerHTML = song.name;
+        document.getElementById('artist').innerHTML = song.artist;
+        document.getElementById('album').innerHTML = song.album;
 
         var songPath = song.path;
         musicPlayer.src = 'song/' + b64.encodeBase64Url(songPath);
