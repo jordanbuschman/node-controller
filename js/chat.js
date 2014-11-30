@@ -28,16 +28,17 @@ var chat = function(io) {
             'queue': musicQueue.getQueue(),
             'next': musicQueue.getNextPlayed(),
             'last': musicQueue.getLastPlayed(),
+            'nowPlaying': musicQueue.nowPlaying(),
             'library': musicQueue.getLibrary(),
             'isPaused': isPaused,
         });
         
         socket.on('song ended', function() {
-            musicQueue.playNext();
+            musicQueue.songFinishedPlaying();
+            musicQueue.loadSong();
 
-            if (musicQueue.nowPlaying() == -1) { //No songs left, pause music
+            if (!musicQueue.nowPlaying()) { //No songs left, pause music
                 isPaused = true;
-                console.log('PAUSING MUSIC');
             }
             else {
                 isPaused = false;
@@ -65,6 +66,7 @@ var chat = function(io) {
             'queue': musicQueue.getQueue(),
             'next': musicQueue.getNextPlayed(),
             'last': musicQueue.getLastPlayed(),
+            'nowPlaying': musicQueue.nowPlaying(),
             'library': musicQueue.getLibrary(),
             'isPaused': isPaused,
             'userCount': userCount,
@@ -110,28 +112,39 @@ var chat = function(io) {
 
         socket.on('pause music', function() {
             //Pause the current song
-            if (!isPaused) {
-                isPaused = true;
-                console.log('Music paused.');
-                musicPlayerIO.emit('pause music');
-                musicControllerIO.emit('pause music');
-            }
+            isPaused = true;
+            console.log('Music paused.');
+            musicPlayerIO.emit('pause music');
+            musicControllerIO.emit('pause music');
         });
 
         socket.on('play music', function() {
             //Play the current song
-            if (isPaused) {
-                isPaused = false;
-                console.log('Music resumed.');
-                musicPlayerIO.emit('play music');
-                musicControllerIO.emit('play music');
-            }
+            isPaused = false;
+            console.log('Music resumed.');
+            musicPlayerIO.emit('play music');
+            musicControllerIO.emit('play music');
         });
 
         socket.on('change play head', function(time) {
             console.log('Changing time to ' + time);
             musicPlayerIO.emit('change play head', time);
             musicControllerIO.emit('change play head', time);
+        });
+
+        socket.on('song ended', function() {
+            musicQueue.songFinishedPlaying();
+            musicQueue.loadSong();
+
+            if (!musicQueue.nowPlaying()) { //No songs left, pause music
+                isPaused = true;
+            }
+            else {
+                isPaused = false;
+            }
+
+            musicPlayerIO.emit('song ended');
+            musicControllerIO.emit('song ended');
         });
 
         socket.on('disconnect app', function() {

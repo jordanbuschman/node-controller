@@ -1,11 +1,12 @@
 /* Client side music queue */
 
-function MusicQueue(_library, _queue, _last, _next) {
+function MusicQueue(_library, _queue, _last, _next, _nowPlaying) {
 
     var library = _library; //Where all of the song info goes
     var queue = _queue; //Queued music selected by a user
     var lastPlayed = _last; //List of songs last played
     var nextPlayed = _next; //List of songs that will be played next (before queue)
+    var nowPlaying = _nowPlaying; //Song listed as now playing
 
     this.getLibrary = function() {
         return library;
@@ -52,12 +53,7 @@ function MusicQueue(_library, _queue, _last, _next) {
     
     this.nowPlaying = function() {
     //Return the index of the song that should be playing now
-        if (nextPlayed.length > 0)
-            return nextPlayed[0];
-        else if (queue.length > 0)
-            return queue[0];
-        else
-            return -1;
+        return nowPlaying;
     };
 
     this.nowPlayingInfo = function() {
@@ -75,7 +71,7 @@ function MusicQueue(_library, _queue, _last, _next) {
 
     this.changeSong = function(libraryID) {
         this.shuffle();
-        nextPlayed.unshift(libraryID);
+        nowPlaying = libraryID;
     }
 
     this.getSongInfo = function(libraryID) {
@@ -83,21 +79,31 @@ function MusicQueue(_library, _queue, _last, _next) {
         return library[libraryID];
     };
 
-    this.playNext = function() {
-    //Play the next song in the queue
-        if (nextPlayed.length > 0)
-            lastPlayed.push(nextPlayed.shift());
-        else if (queue.length > 0)
-            lastPlayed.push(queue.shift());
-
-        return this.nowPlaying();
+    this.songFinishedPlaying = function() {
+    //Put the song that was just finished in the last played list
+        if (nowPlaying) {
+            lastPlayed.push(nowPlaying);
+            nowPlaying = null;
+        }
     };
     
-    this.playPrevious = function() {
-    //Play the last song that was played previously (or the current song if there isn't one on the list)
-        if (lastPlayed.length > 0)
-            nextPlayed.unshift(lastPlayed.pop())
-    
-        return this.nowPlaying();
+    this.undoSongFinishedPlaying = function() {
+    //Put the last song in the next played stack
+        if (nowPlaying) {
+            nextPlayed.unshift(nowPlaying);
+            nowPlaying = null;
+        }
+    };
+
+    this.loadSong = function() {
+        if (nextPlayed.length > 0) {
+            nowPlaying = nextPlayed.shift();
+        }
+        else if (queue.length > 0) {
+            nowPlaying = queue.shift();
+        }
+        else {
+            nowPlaying = null;
+        }
     };
 }
