@@ -23,14 +23,18 @@
     }
 
     musicPlayer.addEventListener('ended', function() {
+        document.getElementById('title').innerHTML = '...';
+        document.getElementById('artist').innerHTML = '...';
+        document.getElementById('album').innerHTML = '...';
+
         isPaused = false;
 
-        socket.emit('song ended', musicQueue.nowPlaying());
+        socket.emit('song ended');
         musicQueue.playNext();
 
         loadAndPlay();
     });
-
+    /***********************************/
 
     socket.on('player info', function(info) {
         console.log(info);

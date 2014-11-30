@@ -32,15 +32,11 @@ var chat = function(io) {
             'isPaused': isPaused,
         });
         
-        socket.on('song ended', function(libraryID) {
-            //Song has ended, make sure that libraryID is the song that just ended, then relay the information
-            if (libraryID != musicQueue.nowPlaying())
-                return;
-
+        socket.on('song ended', function() {
             musicQueue.playNext();
 
-            musicPlayerIO.emit('song ended', libraryID);
-            musicControllerIO.emit('song ended', libraryID);
+            musicPlayerIO.emit('song ended');
+            musicControllerIO.emit('song ended');
         });
 
         socket.on('disconnect', function() {
