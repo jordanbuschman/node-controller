@@ -35,6 +35,14 @@ var chat = function(io) {
         socket.on('song ended', function() {
             musicQueue.playNext();
 
+            if (musicQueue.nowPlaying() == -1) { //No songs left, pause music
+                isPaused = true;
+                console.log('PAUSING MUSIC');
+            }
+            else {
+                isPaused = false;
+            }
+
             musicPlayerIO.emit('song ended');
             musicControllerIO.emit('song ended');
         });

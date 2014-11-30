@@ -10,16 +10,17 @@
         var song = musicQueue.nowPlayingInfo();
         if (!song) return; //No next song, return
 
+        isPaused = false;
+
         document.getElementById('title').innerHTML = song.name;
         document.getElementById('artist').innerHTML = song.artist;
         document.getElementById('album').innerHTML = song.album;
 
         var songPath = song.path;
         musicPlayer.src = 'song/' + b64.encodeBase64Url(songPath);
-        musicPlayer.load();
 
-        if (!isPaused)//If the song should be playing, load up the song
-            musicPlayer.play();
+        musicPlayer.load();
+        musicPlayer.play();
     }
 
     musicPlayer.addEventListener('ended', function() {
@@ -27,12 +28,14 @@
         document.getElementById('artist').innerHTML = '...';
         document.getElementById('album').innerHTML = '...';
 
-        isPaused = false;
-
         socket.emit('song ended');
         musicQueue.playNext();
 
+        if (musicQueue.nowPlaying() == -1)
+            isPaused = true;
+
         loadAndPlay();
+
     });
     /***********************************/
 
@@ -66,7 +69,10 @@
     });
 
     socket.on('play music', function() {
-        musicPlayer.play();
+        if (!musicPlayer.src)
+            loadAndPlay();
+        else
+            musicPlayer.play();
     });
 
     socket.on('set volume', function(val) {
