@@ -109,6 +109,16 @@ var chat = function(io) {
             musicPlayerIO.emit('queue song', libraryID);
             musicControllerIO.emit('queue song', libraryID);
         });
+        
+        socket.on('unqueue song', function(libraryID) {
+            musicQueue.remove(libraryID);
+
+            var this_song = musicQueue.getSongInfo(libraryID);
+            console.log('Song removed from queue: ' + this_song.name + ' - ' + this_song.artist);
+
+            musicPlayerIO.emit('unqueue song', libraryID);
+            musicControllerIO.emit('unqueue song', libraryID);
+        });
 
         socket.on('pause music', function() {
             //Pause the current song

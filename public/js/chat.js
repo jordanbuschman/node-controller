@@ -66,6 +66,10 @@
         musicQueue.add(libraryID);
     });
 
+    socket.on('unqueue song', function(index) {
+        musicQueue.remove(index);
+    });
+
     socket.on('pause music', function() {
         musicPlayer.pause();
     });
