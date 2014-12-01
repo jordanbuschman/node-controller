@@ -37,7 +37,7 @@ var chat = function(io) {
             musicQueue.songFinishedPlaying();
             musicQueue.loadSong();
 
-            if (!musicQueue.nowPlaying()) { //No songs left, pause music
+            if (musicQueue.nowPlaying() == null) { //No songs left, pause music
                 isPaused = true;
             }
             else {
@@ -85,7 +85,7 @@ var chat = function(io) {
 
         socket.on('change song', function(libraryID) {
             //Change the song to song of libraryID
-            if (nowPlayingLibraryID != libraryID) {
+            //if (nowPlayingLibraryID != libraryID) {
                 musicQueue.changeSong(libraryID);
                 nowPlayingLibraryID = libraryID;
 
@@ -96,7 +96,7 @@ var chat = function(io) {
 
                 var this_song = musicQueue.getSongInfo(libraryID);
                 console.log('Now playing: ' + this_song.name + ' - ' + this_song.artist);
-            }
+            //}
         });
 
         socket.on('queue song', function(libraryID) {
@@ -146,7 +146,7 @@ var chat = function(io) {
             musicQueue.songFinishedPlaying();
             musicQueue.loadSong();
 
-            if (!musicQueue.nowPlaying()) { //No songs left, pause music
+            if (musicQueue.nowPlaying() == null) { //No songs left, pause music
                 isPaused = true;
             }
             else {
@@ -155,6 +155,22 @@ var chat = function(io) {
 
             musicPlayerIO.emit('song ended');
             musicControllerIO.emit('song ended');
+        });
+
+        socket.on('play previous', function() {
+            console.log('Skipping back.');
+            musicQueue.playPrevious();
+
+            musicPlayerIO.emit('play previous');
+            musicControllerIO.emit('play previous');
+        });
+
+        socket.on('play next', function() {
+            console.log('Skipping forward.');
+            musicQueue.playNext();
+
+            musicPlayerIO.emit('play next');
+            musicControllerIO.emit('play next');
         });
 
         socket.on('disconnect app', function() {

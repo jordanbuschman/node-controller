@@ -22,6 +22,14 @@
             musicPlayer.play();
     }
 
+    function clearSource() { //Clear the source and reset view
+        musicPlayer.src = '';
+
+        document.getElementById('title').innerHTML = '...';
+        document.getElementById('artist').innerHTML = '...';
+        document.getElementById('album').innerHTML = '...';
+    }
+
     musicPlayer.addEventListener('ended', function() {
         document.getElementById('title').innerHTML = '...';
         document.getElementById('artist').innerHTML = '...';
@@ -31,7 +39,7 @@
         musicQueue.songFinishedPlaying();
         musicQueue.loadSong();
 
-        if (!musicQueue.nowPlaying())
+        if (musicQueue.nowPlaying() == null)
             isPaused = true;
         else
             isPaused = false;
@@ -65,7 +73,6 @@
     socket.on('queue song', function(libraryID) {
         musicQueue.add(libraryID);
     });
-
     socket.on('unqueue song', function(index) {
         musicQueue.remove(index);
     });
@@ -89,11 +96,33 @@
         musicQueue.songFinishedPlaying();
         musicQueue.loadSong();
 
-        if (!musicQueue.nowPlaying()) { //No songs left, pause music
+        if (musicQueue.nowPlaying() == null) { //No songs left, pause music
             isPaused = true;
         }
         else {
             isPaused = false;
+        }
+    });
+
+    socket.on('play previous', function() {
+        musicQueue.playPrevious();
+
+        if (musicQueue.nowPlaying() == null) { //No previous song to play, delete song
+            clearSource();
+        }
+        else {
+            loadAndPlay();
+        }
+    });
+
+    socket.on('play next', function() {
+        musicQueue.playNext();
+
+        if (musicQueue.nowPlaying() == null) { //No next song to play, delete song
+            clearSource();
+        }
+        else {
+            loadAndPlay();
         }
     });
 })();

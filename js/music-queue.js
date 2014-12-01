@@ -60,7 +60,7 @@ function MusicQueue(callback) {
     var queue = []; //Queued music selected by a user
     var lastPlayed = []; //List of songs last played
     var nextPlayed = []; //List of songs that will be played next (before queue)
-    var nowPlaying = null;; //Song now playing
+    var nowPlaying = null; //Song now playing
 
     var songNames = readDir.read(path.join(__dirname, '../music'), null, readDir.ABSOLUTE_PATHS, function(err, data) { 
         if (err)
@@ -147,7 +147,7 @@ function MusicQueue(callback) {
 
     this.songFinishedPlaying = function() {
     //Put the song that was just finished in the last played list
-        if (nowPlaying) {
+        if (nowPlaying != null) {
             lastPlayed.push(nowPlaying);
             nowPlaying = null;
         }
@@ -155,8 +155,37 @@ function MusicQueue(callback) {
     
     this.undoSongFinishedPlaying = function() {
     //Put the last song in the next played stack
-        if (nowPlaying) {
+        if (nowPlaying != null) {
             nextPlayed.unshift(nowPlaying)
+            nowPlaying = null;
+        }
+    };
+
+    this.playPrevious = function() {
+    //Put the previous song into nowPlaying
+        if (lastPlayed.length > 0) {
+            if (nowPlaying != null)
+                nextPlayed.unshift(nowPlaying);
+            nowPlaying = lastPlayed.shift();
+        }
+        else {
+            nowPlaying = null;
+        }
+    };
+
+    this.playNext = function() {
+    //Put the next song to play into nowPlaying
+        if (nextPlayed.length > 0) {
+            if (nowPlaying != null)
+                lastPlayed.unshift(nowPlaying);
+            nowPlaying = nextPlayed.shift();
+        }
+        else if (queue.length > 0) {
+            if (nowPlaying != null)
+                lastPlayed.unshift(nowPlaying);
+            nowPlaying = queue.shift();
+        }
+        else {
             nowPlaying = null;
         }
     };

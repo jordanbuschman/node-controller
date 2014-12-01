@@ -81,7 +81,7 @@ function MusicQueue(_library, _queue, _last, _next, _nowPlaying) {
 
     this.songFinishedPlaying = function() {
     //Put the song that was just finished in the last played list
-        if (nowPlaying) {
+        if (nowPlaying != null) {
             lastPlayed.push(nowPlaying);
             nowPlaying = null;
         }
@@ -89,8 +89,37 @@ function MusicQueue(_library, _queue, _last, _next, _nowPlaying) {
     
     this.undoSongFinishedPlaying = function() {
     //Put the last song in the next played stack
-        if (nowPlaying) {
+        if (nowPlaying != null) {
             nextPlayed.unshift(nowPlaying);
+            nowPlaying = null;
+        }
+    };
+
+    this.playPrevious = function() {
+    //Put the previous song into nowPlaying
+        if (nextPlayed.length > 0) {
+            if (nowPlaying != null)
+                nextPlayed.unshift(nowPlaying);
+            nowPlaying = nextPlayed.shift();
+        }
+        else {
+            nowPlaying = null;
+        }
+    };
+
+    this.playNext = function() {
+    //Put the next song to play into nowPlaying
+        if (nextPlayed.length > 0) {
+            if (nowPlaying != null)
+                lastPlayed.unshift(nowPlaying);
+            nowPlaying = nextPlayed.shift();
+        }
+        else if (queue.length > 0) {
+            if (nowPlaying != null)
+                lastPlayed.unshift(nowPlaying);
+            nowPlaying = queue.shift();
+        }
+        else {
             nowPlaying = null;
         }
     };
