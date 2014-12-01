@@ -73,6 +73,7 @@
     socket.on('queue song', function(libraryID) {
         musicQueue.add(libraryID);
     });
+
     socket.on('unqueue song', function(index) {
         musicQueue.remove(index);
     });

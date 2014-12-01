@@ -97,10 +97,10 @@ function MusicQueue(_library, _queue, _last, _next, _nowPlaying) {
 
     this.playPrevious = function() {
     //Put the previous song into nowPlaying
-        if (nextPlayed.length > 0) {
+        if (lastPlayed.length > 0) {
             if (nowPlaying != null)
                 nextPlayed.unshift(nowPlaying);
-            nowPlaying = nextPlayed.shift();
+            nowPlaying = lastPlayed.shift();
         }
         else {
             nowPlaying = null;
