@@ -10,7 +10,6 @@ cd node-controller
 sudo npm install
 node start
 ```
-
 ## Messages
 Controllers (iOS devices) and players (music output points, or computers pointed to <ip-address>:<port>/play) can receive and send certain messages:
 
