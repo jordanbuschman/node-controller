@@ -46,7 +46,9 @@ Controllers (iOS devices) and players (music output points, or computers pointed
     Upon receiving this message, all clients will try to load up the song last played (or rewind the currently playing song, if there isn't one).
 
 * __Message:__ _'play next'_, __Parameters:__ _{}_
+
     Upon receiving this message, all clients will try to load up the song next to play (or do nothing, if there isn't one).
 
 * __Message:__ _'reorder queue'_, __Parameters:__ _{from, to}_
+
     Upon receiving this message, all clients will move a song at position queue[from] to queue[to].
