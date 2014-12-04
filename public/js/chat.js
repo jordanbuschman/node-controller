@@ -63,7 +63,6 @@
     socket.on('change song', function(libraryID) {
         musicQueue.changeSong(libraryID);
         var song = musicQueue.getSongInfo(libraryID).path;
-        console.log('change song: ' + song);
 
         isPaused = false;
 
