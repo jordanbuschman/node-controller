@@ -126,4 +126,8 @@
             loadAndPlay();
         }
     });
+
+    socket.on('reorder queue', function(jsonData) {
+        musicQueue.move(jsonData);
+    });
 })();

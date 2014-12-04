@@ -41,14 +41,14 @@ function MusicQueue(_library, _queue, _last, _next, _nowPlaying) {
         nextPlayed = [];
     };
         
-    this.move = function(from, to) {
+    this.move = function(jsonData) {
     //Move song at position from to position to
-        if (to >= queue.length || from >= queue.length) //Out of bounds, return
-            return;
-        else { //Swap songs
-            queue.splice(to, 0, queue[from]); //Move element to new position
-            queue.splice(from); //Remove old element
-        }
+        var from = jsonData['from'];
+        var to = jsonData['to'];
+        var fromObject = queue[from];
+
+        queue.splice(from, 1); //Remove old element
+        queue.splice(to, 0, fromObject); //Put old element in new position
     };
     
     this.nowPlaying = function() {

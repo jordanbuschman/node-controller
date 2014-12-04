@@ -109,12 +109,9 @@ function MusicQueue(callback) {
         
     this.move = function(from, to) {
     //Move song at position from to position to
-        if (to >= queue.length || from >= queue.length) //Out of bounds, return
-            return;
-        else { //Swap songs
-            queue.splice(to, 0, queue[from]); //Move element to new position
-            queue.splice(from); //Remove old element
-        }
+        var fromObject = queue[from];
+        queue.splice(from, 1); //Remove old element
+        queue.splice(to, 0, fromObject); //Move element to new position
     };
     
     this.nowPlaying = function() {

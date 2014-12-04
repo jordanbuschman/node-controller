@@ -174,6 +174,14 @@ var chat = function(io) {
             musicControllerIO.emit('play next');
         });
 
+        socket.on('reorder queue', function(from, to) {
+            console.log('Moving ' + from + ' to ' + to + '.');
+            musicQueue.move(from, to);
+
+            musicPlayerIO.emit('reorder queue', {from: from, to: to});
+            musicControllerIO.emit('reorder queue', {from: from, to: to});
+        });
+
         socket.on('disconnect app', function() {
             socket.disconnect();
         });
